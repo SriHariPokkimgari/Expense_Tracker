@@ -10,12 +10,12 @@ const router = Router();
 
 // Signup router for account creation
 
-router.post("/signup", (req, res) => {
-  Registration(req, res);
-});
+router.post("/registration", Registration);
 
-router.post("/login", (req, res) => {
-  Login(req, res);
-});
+router.post("/login", Login);
+
+router.get("/getUser", getUsers);
+
+router.delete("/deleteUser/:id", deleteUser);
 
 export default router;

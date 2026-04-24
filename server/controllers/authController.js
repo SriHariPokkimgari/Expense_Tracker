@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import pool from "../config/db.js";
 import { hash, compare } from "../service/password.js";
+import validator from "validator";
 dotenv.config();
 
 // Signup controller form account creation.
@@ -12,6 +13,10 @@ export const Registration = async (req, res) => {
     if (!name || !email || !password) {
       console.log("User details was missing.");
       return res.status(400).json({ message: "User details was missing." });
+    }
+
+    if (!validator.isEmail(email)) {
+      return res.status(400).json({ message: "Invalid email" });
     }
 
     const isExist = await pool.query(`SELECT id FROM users WHERE email = $1`, [
@@ -48,8 +53,8 @@ export const getUsers = async (req, res) => {
     if (users.rowCount === 0) {
       return res.status(404).json({ message: "Users not found" });
     }
-    console.log(users.rows[0]);
-    res.status(200).json(users.rows[0]);
+    //console.log(users.rows[0]);
+    res.status(200).json(users.rows);
   } catch (error) {
     console.error("Error from get users:", error);
     res.status(500).json(error);
@@ -57,16 +62,15 @@ export const getUsers = async (req, res) => {
 };
 export const deleteUser = async (req, res) => {
   try {
-    const { name } = req.body;
+    const { id } = req.params;
 
-    if (!name) {
-      console.log("name was missing");
-      return res.status(400).json({ message: "Name was missing." });
+    if (!id) {
+      console.log("id was missing");
+      return res.status(400).json({ message: "id was missing." });
     }
 
-    const data = await pool.query(`DELETE FROM users WHERE name = $1`, [name]);
+    await pool.query(`DELETE FROM users WHERE id = $1`, [id]);
 
-    console.log(data.rows);
     res.status(202).json({ message: "User deletion successfully completed" });
   } catch (error) {
     console.error(error);

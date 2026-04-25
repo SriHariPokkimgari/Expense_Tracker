@@ -102,20 +102,27 @@ export const Login = async (req, res) => {
       return res.status(400).json({ message: "Email or password incorect." });
     }
 
-    const accessToken = await jwt.sign(
+    const token = await jwt.sign(
       { id: user.rows[0].id },
       process.env.JWT_SECRET,
-      {
-        expiresIn: "10m",
-      },
     );
+
+    res.cookie("accessToken", token, {
+      httpOnly: true,
+      sameSite: "strict",
+      maxAge: 15 * 60 * 1000,
+    });
 
     res.status(200).json({
       message: "Login successfully completed",
-      accessToken: accessToken,
     });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Something went wrong try again later" });
   }
+};
+
+export const Logout = (req, res) => {
+  res.clearCookie("accessToken");
+  res.status(200).json({ message: "Logout successfully completed." });
 };

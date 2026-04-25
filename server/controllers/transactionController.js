@@ -3,7 +3,6 @@ import pool from "../config/db.js";
 export const getAllTransactions = async (req, res) => {
   try {
     const id = req.user.id;
-
     const transactions = await pool.query(
       `
           SELECT t.id, t.amount, t.description, t.date,
@@ -22,6 +21,34 @@ export const getAllTransactions = async (req, res) => {
   } catch (error) {
     console.log("Get error while fetching transactions: ", error);
     res.status(500).json({ message: "Something went wrong, Try agian." });
+  }
+};
+
+export const getTransactionById = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { id } = req.params;
+
+    const transaction = await pool.query(
+      `SELECT t.id, t.amount, t.description, t.date,
+      c.name AS category, c.type
+      FROM transactions t JOIN categories c ON t.category_id = c.id
+      WHERE t.id = $1 AND t.user_id = $2`,
+      [id, userId],
+    );
+
+    console.log(transaction.rows);
+
+    if (transaction.rowCount === 0) {
+      return res.status(404).json({ message: "Transaction was not found." });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Successful", transaction: transaction.rows });
+  } catch (error) {
+    console.log("Error while fetching the transaction by id: ", error);
+    res.status(500).json({ error });
   }
 };
 

@@ -5,17 +5,20 @@ dotenv.config();
 
 export const authMiddlerware = async (req, res, next) => {
   try {
-    const authHeader = req.headers.authorization;
+    const token = req.cookies.accessToken;
 
-    if (!authHeader || !authHeader.startsWith("Bearer")) {
+    if (!token) {
       return res
         .status(401)
         .json({ message: "Access deined. No token provided" });
     }
 
-    const token = authHeader.split(" ")[1];
     const decode = await jwt.decode(token, process.env.JWT_SECRET);
 
+    if (!decode)
+      return res
+        .status(401)
+        .json({ message: "Access deined. Unauthrized user." });
     req.user = decode;
 
     next();

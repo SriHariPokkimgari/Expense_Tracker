@@ -115,6 +115,7 @@ export const Login = async (req, res) => {
 
     res.status(200).json({
       message: "Login successfully completed",
+      username: user.rows[0]?.name,
     });
   } catch (error) {
     console.log(error);

@@ -45,7 +45,6 @@ const Dashboard = () => {
 
   const balance = totalIncome - totalExpenses;
 
-  // Chart data — group by category
   const chartData = transactions.reduce((acc, t) => {
     const existing = acc.find((item) => item.category === t.category);
     if (existing) {
@@ -179,16 +178,16 @@ const Dashboard = () => {
                   <YAxis hide />
                   <Tooltip
                     contentStyle={{
-                      background: "#111827",
+                      background: "#fff",
                       border: "1px solid #1f2937",
                       borderRadius: "8px",
-                      color: "#fff",
-                      fontSize: "12px",
+                      color: "#000",
+                      fontSize: "11px",
                     }}
                     cursor={{ fill: "rgba(255,255,255,0.03)" }}
                     formatter={(value) => [`₹${value}`, "Amount"]}
                   />
-                  <Bar dataKey="amount" radius={[4, 4, 0, 0]}>
+                  <Bar dataKey="amount" radius={[6, 6, 0, 0]}>
                     {chartData.map((entry, index) => (
                       <Cell
                         key={index}

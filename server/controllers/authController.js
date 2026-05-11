@@ -105,6 +105,7 @@ export const Login = async (req, res) => {
     const token = await jwt.sign(
       { id: user.rows[0].id },
       process.env.JWT_SECRET,
+      { expiresIn: "15 min" },
     );
 
     res.cookie("accessToken", token, {
@@ -115,7 +116,6 @@ export const Login = async (req, res) => {
 
     res.status(200).json({
       message: "Login successfully completed",
-      username: user.rows[0]?.name,
     });
   } catch (error) {
     console.log(error);

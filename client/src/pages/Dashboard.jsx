@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import API from "../api/axios";
+import Navbar from "../components/Navbar";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import {
@@ -81,36 +82,20 @@ const Dashboard = () => {
 
   if (error)
     return (
-      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
-        <p className="text-red-400 text-sm">{error}</p>
-      </div>
+      <>
+        <div className="min-h-screen bg-gray-950 text-white">
+          <Navbar handleLogout={handleLogout} />
+          <div className=" min-h-screen flex items-center justify-center">
+            <p className="text-red-400 text-sm">{error}</p>
+          </div>
+        </div>
+      </>
     );
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
       {/* Navbar */}
-      <nav className="border-b border-gray-800 px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-7 h-7 bg-emerald-500 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">₹</span>
-          </div>
-          <span className="font-semibold text-white">ExpenseTracker</span>
-        </div>
-        <div className="flex items-center gap-4">
-          <button
-            onClick={() => navigate("/transactions")}
-            className="text-sm text-gray-400 hover:text-white transition-colors"
-          >
-            Transactions
-          </button>
-          <button
-            onClick={handleLogout}
-            className="text-sm bg-gray-800 hover:bg-gray-700 px-4 py-1.5 rounded-lg transition-colors"
-          >
-            Logout
-          </button>
-        </div>
-      </nav>
+      <Navbar handleLogout={handleLogout} />
 
       <main className="max-w-5xl mx-auto px-6 py-8">
         {/* Header */}

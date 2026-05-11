@@ -67,6 +67,7 @@ const Transactions = () => {
   };
 
   const handleEditClick = (transaction) => {
+    console.log(transaction);
     setEditingTransaction(transaction.id);
     setFormData({
       category_id: transaction.category_id || "",
@@ -281,8 +282,8 @@ const Transactions = () => {
 
         {/* Transactions List */}
         <div className="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden">
-          {/* Table Header */}
-          <div className="grid grid-cols-12 gap-4 px-5 py-3 border-b border-gray-800">
+          {/* Table Header — hidden on mobile */}
+          <div className="hidden sm:grid grid-cols-12 gap-4 px-5 py-3 border-b border-gray-800">
             <div className="col-span-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
               Category
             </div>
@@ -322,65 +323,106 @@ const Transactions = () => {
             transactions.map((tran) => (
               <div
                 key={tran.id}
-                className="grid grid-cols-12 gap-4 px-5 py-4 border-b border-gray-800/50 last:border-0 hover:bg-gray-800/30 transition-colors group"
+                className="group border-b border-gray-800/50 last:border-0 hover:bg-gray-800/30 transition-colors"
               >
-                {/* Category */}
-                <div className="col-span-4 flex items-center gap-3">
-                  <div
-                    className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs flex-shrink-0 ${tran.type === "income" ? "bg-emerald-500/10 text-emerald-400" : "bg-red-500/10 text-red-400"}`}
-                  >
-                    {tran.type === "income" ? "↑" : "↓"}
+                {/* ── MOBILE layout (< sm) ── */}
+                <div className="flex sm:hidden items-center justify-between gap-3 px-4 py-3.5">
+                  {/* Left */}
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div
+                      className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm shrink-0 ${tran.type === "income" ? "bg-emerald-500/10 text-emerald-400" : "bg-red-500/10 text-red-400"}`}
+                    >
+                      {tran.type === "income" ? "↑" : "↓"}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-white text-sm font-medium truncate">
+                        {tran.category}
+                      </p>
+                      <p className="text-gray-500 text-xs truncate">
+                        {tran.description || "No description"} ·{" "}
+                        {new Date(tran.date).toLocaleDateString("en-IN")}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-white text-sm font-medium">
-                      {tran.category}
+                  {/* Right */}
+                  <div className="flex items-center gap-2 shrink-0">
+                    <p
+                      className={`text-sm font-semibold ${tran.type === "income" ? "text-emerald-400" : "text-red-400"}`}
+                    >
+                      {tran.type === "income" ? "+" : "-"}
+                      {fmt(tran.amount)}
                     </p>
-                    <p className="text-gray-500 text-xs capitalize">
-                      {tran.type}
-                    </p>
+                    <button
+                      onClick={() => handleEditClick(tran)}
+                      className="w-7 h-7 flex items-center justify-center rounded-lg bg-gray-700 hover:bg-gray-600 text-xs transition-colors"
+                    >
+                      ✏️
+                    </button>
+                    <button
+                      onClick={() => setDeleteConfirm(tran.id)}
+                      className="w-7 h-7 flex items-center justify-center rounded-lg bg-gray-700 hover:bg-red-500/20 hover:text-red-400 text-xs transition-colors"
+                    >
+                      🗑️
+                    </button>
                   </div>
                 </div>
 
-                {/* Description */}
-                <div className="col-span-3 flex items-center">
-                  <p className="text-gray-400 text-sm truncate">
-                    {tran.description || "—"}
-                  </p>
-                </div>
-
-                {/* Date */}
-                <div className="col-span-2 flex items-center">
-                  <p className="text-gray-400 text-sm">
-                    {new Date(tran.date).toLocaleDateString("en-IN")}
-                  </p>
-                </div>
-
-                {/* Amount */}
-                <div className="col-span-2 flex items-center justify-end">
-                  <p
-                    className={`text-sm font-semibold ${tran.type === "income" ? "text-emerald-400" : "text-red-400"}`}
-                  >
-                    {tran.type === "income" ? "+" : "-"}
-                    {fmt(tran.amount)}
-                  </p>
-                </div>
-
-                {/* Actions */}
-                <div className="col-span-1 flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button
-                    onClick={() => handleEditClick(tran)}
-                    className="w-7 h-7 flex items-center justify-center rounded-lg bg-gray-700 hover:bg-gray-600 text-gray-300 text-xs transition-colors"
-                    title="Edit"
-                  >
-                    ✏️
-                  </button>
-                  <button
-                    onClick={() => setDeleteConfirm(tran.id)}
-                    className="w-7 h-7 flex items-center justify-center rounded-lg bg-gray-700 hover:bg-red-500/20 text-gray-300 hover:text-red-400 text-xs transition-colors"
-                    title="Delete"
-                  >
-                    🗑️
-                  </button>
+                {/* ── DESKTOP layout (>= sm) ── */}
+                <div className="hidden sm:grid grid-cols-12 gap-4 px-5 py-4">
+                  {/* Category */}
+                  <div className="col-span-4 flex items-center gap-3">
+                    <div
+                      className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs shrink-0 ${tran.type === "income" ? "bg-emerald-500/10 text-emerald-400" : "bg-red-500/10 text-red-400"}`}
+                    >
+                      {tran.type === "income" ? "↑" : "↓"}
+                    </div>
+                    <div>
+                      <p className="text-white text-sm font-medium">
+                        {tran.category}
+                      </p>
+                      <p className="text-gray-500 text-xs capitalize">
+                        {tran.type}
+                      </p>
+                    </div>
+                  </div>
+                  {/* Description */}
+                  <div className="col-span-3 flex items-center">
+                    <p className="text-gray-400 text-sm truncate">
+                      {tran.description || "—"}
+                    </p>
+                  </div>
+                  {/* Date */}
+                  <div className="col-span-2 flex items-center">
+                    <p className="text-gray-400 text-sm">
+                      {new Date(tran.date).toLocaleDateString("en-IN")}
+                    </p>
+                  </div>
+                  {/* Amount */}
+                  <div className="col-span-2 flex items-center justify-end">
+                    <p
+                      className={`text-sm font-semibold ${tran.type === "income" ? "text-emerald-400" : "text-red-400"}`}
+                    >
+                      {tran.type === "income" ? "+" : "-"}
+                      {fmt(tran.amount)}
+                    </p>
+                  </div>
+                  {/* Actions */}
+                  <div className="col-span-1 flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button
+                      onClick={() => handleEditClick(tran)}
+                      className="w-7 h-7 flex items-center justify-center rounded-lg bg-gray-700 hover:bg-gray-600 text-gray-300 text-xs transition-colors"
+                      title="Edit"
+                    >
+                      ✏️
+                    </button>
+                    <button
+                      onClick={() => setDeleteConfirm(tran.id)}
+                      className="w-7 h-7 flex items-center justify-center rounded-lg bg-gray-700 hover:bg-red-500/20 text-gray-300 hover:text-red-400 text-xs transition-colors"
+                      title="Delete"
+                    >
+                      🗑️
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}

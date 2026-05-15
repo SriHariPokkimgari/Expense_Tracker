@@ -20,8 +20,15 @@ const Login = () => {
       navigate("/Dashboard");
     } catch (error) {
       setError(error.response?.data?.message);
+      if (!error.response) {
+        setError("Something went wrong. Try again later.");
+      }
     } finally {
       setIsLoading(false);
+      setFormData({
+        email: "",
+        password: "",
+      });
     }
   };
 

@@ -1,11 +1,5 @@
 import Router from "express";
-import {
-  Registration,
-  deleteUser,
-  getUsers,
-  Login,
-  Logout,
-} from "../controllers/authController.js";
+import { Registration, Login, Logout } from "../controllers/authController.js";
 
 const router = Router();
 
@@ -17,8 +11,8 @@ router.post("/login", Login);
 
 router.post("/logout", Logout);
 
-router.get("/getUser", getUsers);
+// router.get("/getUser", getUsers);
 
-router.delete("/deleteUser/:id", deleteUser);
+// router.delete("/deleteUser/:id", deleteUser);
 
 export default router;

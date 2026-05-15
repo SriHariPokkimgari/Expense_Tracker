@@ -34,7 +34,6 @@ export const Registration = async (req, res) => {
       [name, email, hashPass],
     );
 
-    console.log("regestratoin completed");
     res
       .status(200)
       .json({ message: "Account creation successfully completed" });
@@ -46,37 +45,37 @@ export const Registration = async (req, res) => {
   }
 };
 
-export const getUsers = async (req, res) => {
-  try {
-    const users = await pool.query(`SELECT * FROM users`);
+// export const getUsers = async (req, res) => {
+//   try {
+//     const users = await pool.query(`SELECT * FROM users`);
 
-    if (users.rowCount === 0) {
-      return res.status(404).json({ message: "Users not found" });
-    }
-    //console.log(users.rows[0]);
-    res.status(200).json(users.rows);
-  } catch (error) {
-    console.error("Error from get users:", error);
-    res.status(500).json(error);
-  }
-};
-export const deleteUser = async (req, res) => {
-  try {
-    const { id } = req.params;
+//     if (users.rowCount === 0) {
+//       return res.status(404).json({ message: "Users not found" });
+//     }
+//     //console.log(users.rows[0]);
+//     res.status(200).json(users.rows);
+//   } catch (error) {
+//     console.error("Error from get users:", error);
+//     res.status(500).json(error);
+//   }
+// };
+// export const deleteUser = async (req, res) => {
+//   try {
+//     const { id } = req.params;
 
-    if (!id) {
-      console.log("id was missing");
-      return res.status(400).json({ message: "id was missing." });
-    }
+//     if (!id) {
+//       console.log("id was missing");
+//       return res.status(400).json({ message: "id was missing." });
+//     }
 
-    await pool.query(`DELETE FROM users WHERE id = $1`, [id]);
+//     await pool.query(`DELETE FROM users WHERE id = $1`, [id]);
 
-    res.status(202).json({ message: "User deletion successfully completed" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json(error);
-  }
-};
+//     res.status(202).json({ message: "User deletion successfully completed" });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json(error);
+//   }
+// };
 
 // Login controller
 export const Login = async (req, res) => {

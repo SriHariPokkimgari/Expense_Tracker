@@ -119,18 +119,19 @@ const LandingPage = () => {
               ExpenseTracker
             </span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1 sm:gap-3">
             <Link
               to="/login"
-              className="text-sm text-slate-400 hover:text-white transition-colors px-4 py-2"
+              className="text-xs sm:text-sm text-slate-400 hover:text-white transition-colors px-2 sm:px-4 py-2"
             >
               Sign in
             </Link>
             <Link
               to="/register"
-              className="btn-primary text-sm bg-emerald-500 hover:bg-emerald-400 text-white font-medium px-5 py-2 rounded-xl transition-colors"
+              className="btn-primary text-xs sm:text-sm bg-emerald-500 hover:bg-emerald-400 text-white font-medium px-3 sm:px-5 py-2 rounded-xl transition-colors"
             >
-              Get started free
+              <span className="hidden sm:inline">Get started free</span>
+              <span className="sm:hidden">Get started</span>
             </Link>
           </div>
         </div>

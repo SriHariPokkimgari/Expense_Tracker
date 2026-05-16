@@ -15,8 +15,7 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const res = await API.post("/auth/login", formData);
-      console.log(res);
+      await API.post("/auth/login", formData);
       login();
       navigate("/Dashboard");
     } catch (error) {

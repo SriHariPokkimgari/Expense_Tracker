@@ -24,10 +24,8 @@ const Dashboard = () => {
     setIsLoading(true);
     try {
       const res = await API.get("/transactions");
-      console.log(res);
       setTransactions(res.data);
     } catch (error) {
-      console.log(error.response);
       setError(error.response?.data?.message);
     } finally {
       setIsLoading(false);
@@ -75,8 +73,9 @@ const Dashboard = () => {
 
   if (isLoading)
     return (
-      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
-        <div className="text-emerald-400 text-sm animate-pulse">
+      <div className="min-h-screen bg-gray-950 text-white">
+        <Navbar handleLogout={handleLogout} />
+        <div className="min-h-screen flex items-center justify-center text-emerald-400 text-sm animate-pulse">
           Loading your dashboard...
         </div>
       </div>

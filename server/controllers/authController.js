@@ -83,7 +83,6 @@ export const Login = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      console.log("User details were missing.");
       return res.status(400).json({ message: "User detail were missing." });
     }
 
@@ -114,7 +113,6 @@ export const Login = async (req, res) => {
       maxAge: 15 * 60 * 1000,
     });
 
-    console.log(req.cookies.accessToken);
     res.status(200).json({
       message: "Login successfully completed",
     });
@@ -133,7 +131,7 @@ export const Logout = (req, res) => {
 
     res.status(200).json({ message: "Logout successfully completed." });
   } catch (error) {
-    console.log(error);
+    console.log("logout erroe", error);
     res.status(500).json(error);
   }
 };

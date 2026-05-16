@@ -16,6 +16,7 @@ const Login = () => {
     setIsLoading(true);
     try {
       const res = await API.post("/auth/login", formData);
+      console.log(res);
       login();
       navigate("/Dashboard");
     } catch (error) {

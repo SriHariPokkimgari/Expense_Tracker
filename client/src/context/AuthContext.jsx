@@ -9,7 +9,8 @@ export const AuthProvider = ({ children }) => {
   const login = () => setIsLoggedIn(true);
 
   const logout = async () => {
-    await API.post("auth/logout");
+    const res = await API.post("auth/logout");
+    console.log(res);
     setIsLoggedIn(false);
   };
 

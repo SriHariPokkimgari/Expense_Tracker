@@ -24,8 +24,10 @@ const Dashboard = () => {
     setIsLoading(true);
     try {
       const res = await API.get("/transactions");
+      console.log(res);
       setTransactions(res.data);
     } catch (error) {
+      console.log(error.response);
       setError(error.response?.data?.message);
     } finally {
       setIsLoading(false);

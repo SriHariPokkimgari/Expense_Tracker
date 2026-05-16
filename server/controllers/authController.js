@@ -109,7 +109,8 @@ export const Login = async (req, res) => {
 
     res.cookie("accessToken", token, {
       httpOnly: true,
-      sameSite: "strict",
+      secure: "true",
+      sameSite: "none",
       maxAge: 15 * 60 * 1000,
     });
 
@@ -117,7 +118,6 @@ export const Login = async (req, res) => {
       message: "Login successfully completed",
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({ error: "Something went wrong try again later" });
   }
 };

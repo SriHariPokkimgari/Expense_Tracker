@@ -6,7 +6,7 @@ dotenv.config();
 export const authMiddlerware = async (req, res, next) => {
   try {
     const token = req.cookies.accessToken;
-
+    console.log(token);
     if (!token) {
       return res
         .status(401)

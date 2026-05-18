@@ -25,8 +25,10 @@ const Dashboard = () => {
     try {
       const res = await API.get("/transactions");
       setTransactions(res.data);
+      console.log(res.data);
     } catch (error) {
       setError(error.response?.data?.message);
+      if (error.response?.status === 401) navigate("/login");
     } finally {
       setIsLoading(false);
     }

@@ -28,6 +28,7 @@ const Transactions = () => {
       setTransactions(res.data);
     } catch (error) {
       setError(error.response?.data?.message);
+      if (error.response?.status === 401) navigate("/login");
     } finally {
       setIsLoading(false);
     }
